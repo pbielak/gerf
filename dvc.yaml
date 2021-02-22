@@ -1,0 +1,266 @@
+vars:
+  - num_retrains: 10
+
+stages:
+  embed_node2vec:
+    foreach:
+      - WikiCS
+      - Amazon-CS
+      - Amazon-Photo
+      - Coauthor-CS
+    do:
+      wdir: .
+      cmd: PYTHONPATH=. python3 experiments/scripts/embed/structural/node2vec.py --dataset ${item} --num-retrains ${num_retrains}
+      params:
+        - experiments/configs/embed/structural/node2vec.yaml:
+            - paths
+            - params.${item}
+      deps:
+        - experiments/scripts/embed/structural/node2vec.py
+      outs:
+        - data/embeddings/structural/n2v/${item}/
+
+  embed_line:
+    foreach:
+      - WikiCS
+      - Amazon-CS
+      - Amazon-Photo
+      - Coauthor-CS
+    do:
+      wdir: .
+      cmd: PYTHONPATH=. python3 experiments/scripts/embed/structural/line.py --dataset ${item} --num-retrains ${num_retrains}
+      params:
+        - experiments/configs/embed/structural/line.yaml:
+            - paths
+            - params.${item}
+      deps:
+        - experiments/scripts/embed/structural/line.py
+      outs:
+        - data/embeddings/structural/line/${item}/
+
+  embed_sdne:
+    foreach:
+      - WikiCS
+      - Amazon-CS
+      - Amazon-Photo
+      - Coauthor-CS
+    do:
+      wdir: .
+      cmd: PYTHONPATH=. python3 experiments/scripts/embed/structural/sdne.py --dataset ${item} --num-retrains ${num_retrains}
+      params:
+        - experiments/configs/embed/structural/sdne.yaml:
+            - paths
+            - params.${item}
+      deps:
+        - experiments/scripts/embed/structural/sdne.py
+      outs:
+        - data/embeddings/structural/sdne/${item}/
+
+  embed_tadw:
+    foreach:
+      - WikiCS
+      - Amazon-CS
+      - Amazon-Photo
+      - Coauthor-CS
+    do:
+      wdir: .
+      cmd: PYTHONPATH=. python3 experiments/scripts/embed/attributed/tadw.py --dataset ${item} --num-retrains ${num_retrains}
+      params:
+        - experiments/configs/embed/attributed/tadw.yaml:
+            - paths
+            - params.${item}
+      deps:
+        - experiments/scripts/embed/attributed/tadw.py
+      outs:
+        - data/embeddings/attributed/tadw/${item}/
+
+  embed_fscnmf:
+    foreach:
+      - WikiCS
+      - Amazon-CS
+      - Amazon-Photo
+      - Coauthor-CS
+    do:
+      wdir: .
+      cmd: PYTHONPATH=. python3 experiments/scripts/embed/attributed/fscnmf.py --dataset ${item} --num-retrains ${num_retrains}
+      params:
+        - experiments/configs/embed/attributed/fscnmf.yaml:
+            - paths
+            - params.${item}
+      deps:
+        - experiments/scripts/embed/attributed/fscnmf.py
+      outs:
+        - data/embeddings/attributed/fscnmf/${item}/
+
+  embed_dgi:
+    foreach:
+      - WikiCS
+      - Amazon-CS
+      - Amazon-Photo
+      - Coauthor-CS
+    do:
+      wdir: .
+      cmd: PYTHONPATH=. python3 experiments/scripts/embed/attributed/dgi.py --dataset ${item} --num-retrains ${num_retrains}
+      params:
+        - experiments/configs/embed/attributed/dgi.yaml:
+            - paths
+            - params.${item}
+      deps:
+        - experiments/scripts/embed/attributed/dgi.py
+      outs:
+        - data/embeddings/attributed/dgi/${item}/
+
+  apply_concat_refiner:
+    foreach:
+      - WikiCS
+      - Amazon-CS
+      - Amazon-Photo
+      - Coauthor-CS
+    do:
+      wdir: .
+      cmd: PYTHONPATH=. python3 experiments/scripts/refine/apply_naive_refiner.py --method Concat --dataset ${item}
+      params:
+        - experiments/configs/refine/naive/Concat.yaml:
+            - structural_embedding_methods
+            - paths
+      deps:
+        - experiments/scripts/refine/apply_naive_refiner.py
+        - data/embeddings/structural/n2v/${item}/
+        - data/embeddings/structural/line/${item}/
+        - data/embeddings/structural/sdne/${item}/
+      outs:
+        - data/embeddings/refined/naive/Concat/n2v/${item}/
+        - data/embeddings/refined/naive/Concat/line/${item}/
+        - data/embeddings/refined/naive/Concat/sdne/${item}/
+
+  apply_concat_pca_refiner:
+    foreach:
+      - WikiCS
+      - Amazon-CS
+      - Amazon-Photo
+      - Coauthor-CS
+    do:
+      wdir: .
+      cmd: PYTHONPATH=. python3 experiments/scripts/refine/apply_naive_refiner.py --method ConcatPCA --dataset ${item}
+      params:
+        - experiments/configs/refine/naive/ConcatPCA.yaml:
+            - structural_embedding_methods
+            - paths
+      deps:
+        - experiments/scripts/refine/apply_naive_refiner.py
+        - data/embeddings/structural/n2v/${item}/
+        - data/embeddings/structural/line/${item}/
+        - data/embeddings/structural/sdne/${item}/
+      outs:
+        - data/embeddings/refined/naive/ConcatPCA/n2v/${item}/
+        - data/embeddings/refined/naive/ConcatPCA/line/${item}/
+        - data/embeddings/refined/naive/ConcatPCA/sdne/${item}/
+
+  apply_mlp_refiner:
+    foreach:
+      - WikiCS
+      - Amazon-CS
+      - Amazon-Photo
+      - Coauthor-CS
+    do:
+      wdir: .
+      cmd: PYTHONPATH=. python3 experiments/scripts/refine/apply_naive_refiner.py --method MLP --dataset ${item}
+      params:
+        - experiments/configs/refine/naive/MLP.yaml:
+            - structural_embedding_methods
+            - paths
+            - ${item}
+      deps:
+        - experiments/scripts/refine/apply_naive_refiner.py
+        - data/embeddings/structural/n2v/${item}/
+        - data/embeddings/structural/line/${item}/
+        - data/embeddings/structural/sdne/${item}/
+      outs:
+        - data/embeddings/refined/naive/MLP/n2v/${item}/
+        - data/embeddings/refined/naive/MLP/line/${item}/
+        - data/embeddings/refined/naive/MLP/sdne/${item}/
+
+  hps_GERF:
+    foreach:
+      - WikiCS
+      - Amazon-CS
+      - Amazon-Photo
+      - Coauthor-CS
+    do:
+      wdir: .
+      cmd: PYTHONPATH=. python3 experiments/scripts/refine/hps_GERF.py --dataset ${item}
+      deps:
+        - experiments/scripts/refine/hps_GERF.py
+        - data/embeddings/structural/n2v/${item}/
+        - data/embeddings/structural/line/${item}/
+        - data/embeddings/structural/sdne/${item}/
+      outs:
+        - data/hps/GERF/${item}/log.csv
+        - data/hps/GERF/${item}/best.json
+
+  apply_GERF:
+    foreach:
+      - WikiCS
+      - Amazon-CS
+      - Amazon-Photo
+      - Coauthor-CS
+    do:
+      wdir: .
+      cmd: PYTHONPATH=. python3 experiments/scripts/refine/apply_GERF.py --dataset ${item}
+      params:
+        - experiments/configs/refine/GERF.yaml:
+            - structural_embedding_methods
+            - paths
+      deps:
+        - experiments/scripts/refine/apply_GERF.py
+        - data/embeddings/structural/n2v/${item}/
+        - data/embeddings/structural/line/${item}/
+        - data/embeddings/structural/sdne/${item}/
+        - data/hps/GERF/${item}/best.json
+      outs:
+        - data/embeddings/refined/GERF/n2v/${item}/
+        - data/embeddings/refined/GERF/line/${item}/
+        - data/embeddings/refined/GERF/sdne/${item}/
+
+  evaluate_node_classification:
+    foreach:
+      - WikiCS
+      - Amazon-CS
+      - Amazon-Photo
+      - Coauthor-CS
+    do:
+      wdir: .
+      cmd: PYTHONPATH=. python3 experiments/scripts/evaluate_node_classification.py --dataset ${item}
+      params:
+        - experiments/configs/node_classification.yaml:
+            - embedding_methods
+      deps:
+        - experiments/scripts/evaluate_node_classification.py
+        - src/tasks/node_classification.py
+        - data/embeddings/
+      outs:
+        - data/metrics/node_classification/${item}/
+
+  make_report_tables:
+    wdir: .
+    cmd: PYTHONPATH=. python3 experiments/scripts/make_report_tables.py
+    deps:
+      - experiments/scripts/make_report_tables.py
+      - data/metrics/node_classification
+    outs:
+      - data/report_node_classification.txt
+
+  make_hps_plot:
+    foreach:
+      - WikiCS
+      - Amazon-CS
+      - Amazon-Photo
+      - Coauthor-CS
+    do:
+      wdir: .
+      cmd: PYTHONPATH=. python3 experiments/scripts/make_hps_plot.py --dataset ${item}
+      deps:
+        - experiments/scripts/make_hps_plot.py
+        - data/hps/GERF/${item}/log.csv
+      outs:
+        - data/plots/hps_${item}.png

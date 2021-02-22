@@ -1,0 +1,28 @@
+defaults: &default_values
+  emb_dim: 64  # The resulting embedding is twice this size if order='all'
+  negative_ratio: 1
+  order: 'all'
+
+  batch_size: 128
+
+  num_epochs: 10
+
+paths:
+  output:
+    embedding: 'embeddings/structural/line/${name}/emb_${idx}.pt'
+
+params:
+  WikiCS:
+    <<: *default_values
+
+  Amazon-CS:
+    <<: *default_values
+    batch_size: 4096
+
+  Amazon-Photo:
+    batch_size: 256
+    <<: *default_values
+
+  Coauthor-CS:
+    <<: *default_values
+

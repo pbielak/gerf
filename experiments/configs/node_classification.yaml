@@ -1,0 +1,20 @@
+embedding_methods:
+  - features
+  - structural/line
+  - structural/n2v
+  - structural/sdne
+  - attributed/fscnmf
+  - attributed/tadw
+  - attributed/dgi
+  - refined/naive/Concat/line
+  - refined/naive/Concat/n2v
+  - refined/naive/Concat/sdne
+  - refined/naive/ConcatPCA/line
+  - refined/naive/ConcatPCA/n2v
+  - refined/naive/ConcatPCA/sdne
+  - refined/naive/MLP/line
+  - refined/naive/MLP/n2v
+  - refined/naive/MLP/sdne
+  - refined/GERF/line
+  - refined/GERF/n2v
+  - refined/GERF/sdne

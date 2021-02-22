@@ -1,0 +1,8 @@
+structural_embedding_methods:
+  - n2v
+  - line
+  - sdne
+
+paths:
+  output:
+    embedding: 'data/embeddings/refined/naive/Concat/${emb_method}/${dataset}/'

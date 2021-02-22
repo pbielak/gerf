@@ -1,0 +1,33 @@
+defaults: &default_values
+  emb_dim: 128
+  lr: 0.01
+  batch_size: 128
+
+  walk_length: 20
+  walks_per_node: 10
+  context_size: 10
+  num_negative_samples: 1
+
+  # Effectively this is DeepWalk
+  p: 1
+  q: 1
+
+  num_epochs: 20
+
+paths:
+  output:
+    embedding: 'embeddings/structural/n2v/${name}/emb_${idx}.pt'
+
+params:
+  WikiCS:
+    <<: *default_values
+
+  Amazon-CS:
+    <<: *default_values
+
+  Amazon-Photo:
+    <<: *default_values
+
+  Coauthor-CS:
+    <<: *default_values
+

@@ -1,0 +1,22 @@
+defaults: &default_values
+  emb_dim: 64  # Resulting embedding will be of size 128
+  lr: 0.01
+  num_epochs: 20
+
+paths:
+  output:
+    embedding: 'embeddings/attributed/tadw/${name}/emb_${idx}.pt'
+
+params:
+  WikiCS:
+    <<: *default_values
+
+  Amazon-CS:
+    <<: *default_values
+
+  Amazon-Photo:
+    <<: *default_values
+
+  Coauthor-CS:
+    <<: *default_values
+

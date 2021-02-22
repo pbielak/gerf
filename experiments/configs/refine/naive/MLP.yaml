@@ -1,0 +1,25 @@
+defaults: &defaults
+  lr: 1.e-3
+  batch_size: 128
+  num_epochs: 20
+
+structural_embedding_methods:
+  - n2v
+  - line
+  - sdne
+
+paths:
+  output:
+    embedding: 'data/embeddings/refined/naive/MLP/${emb_method}/${dataset}/'
+
+WikiCS:
+  <<: *defaults
+
+Amazon-CS:
+  <<: *defaults
+
+Amazon-Photo:
+  <<: *defaults
+
+Coauthor-CS:
+  <<: *defaults

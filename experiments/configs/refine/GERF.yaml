@@ -1,0 +1,10 @@
+structural_embedding_methods:
+  - n2v
+  - line
+  - sdne
+
+paths:
+  input:
+    best_params: 'data/hps/GERF/${dataset}/best.json'
+  output:
+    embedding: 'data/embeddings/refined/GERF/${emb_method}/${dataset}/'

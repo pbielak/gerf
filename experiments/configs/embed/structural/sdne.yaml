@@ -1,0 +1,30 @@
+defaults: &default_values
+  emb_dim: 128
+  hidden_size: 256
+  nu1: 1.e-5
+  nu2: 1.e-4
+  
+  alpha: 1.e-4
+  beta: 5
+
+  batch_size: 128
+
+  num_epochs: 50
+
+paths:
+  output:
+    embedding: 'embeddings/structural/sdne/${name}/emb_${idx}.pt'
+
+params:
+  WikiCS:
+    <<: *default_values
+
+  Amazon-CS:
+    <<: *default_values
+
+  Amazon-Photo:
+    <<: *default_values
+
+  Coauthor-CS:
+    <<: *default_values
+
