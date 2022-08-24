@@ -55,7 +55,17 @@ directory, whereas the experimental Python scripts are placed in the `experiment
 If you make use GERF in your research, please cite it using the following entry:
 
 ```
-TBA
+@InProceedings{10.1007/978-3-031-08751-6_13,
+author="Bielak, Piotr and Puchalska, Daria and Kajdanowicz, Tomasz",
+title="Retrofitting Structural Graph Embeddings with Node Attribute Information",
+booktitle="Computational Science -- ICCS 2022",
+year="2022",
+editor="Groen, Derek and de Mulatier, Cl{\'e}lia and Paszynski, Maciej and Krzhizhanovskaya, Valeria V. and Dongarra, Jack J. and Sloot, Peter M. A.",
+publisher="Springer International Publishing",
+address="Cham",
+pages="178--191",
+isbn="978-3-031-08751-6"
+}
 ```
 
 ## License
